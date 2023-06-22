@@ -1,5 +1,21 @@
 .header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 80px;
   background-color: #222831;
+}
+
+.header-container svg {
+  color: #eeeeee;
+  font-size: 4.2em;
+}
+
+.header-container p {
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 600;
+  color: white;
+  padding: 0 0.5em;
 }

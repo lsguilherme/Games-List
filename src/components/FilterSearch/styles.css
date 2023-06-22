@@ -1,4 +1,18 @@
 .game-search {
   width: 628px;
   height: 52px;
+  text-align: center;
+
+  border: none;
+  border-radius: 4px;
+}
+
+.game-search:focus {
+  outline: none;
+  border: 1px solid #222831;
+}
+
+.game-search::placeholder {
+  text-align: center;
+  font-style: italic;
 }

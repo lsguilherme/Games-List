@@ -13,7 +13,7 @@ import { FilterGenre } from "./components/FilterGenre";
 import { Footer } from "./components/Footer";
 
 function App() {
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState(null);
   const [genre, setGenre] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -24,7 +24,9 @@ function App() {
       })
       .then((res) => {
         setGames(res?.data);
-
+        console.log(
+          res?.data?.filter((item) => item.platform !== "PC (Windows)")
+        );
         setGenre([...new Set(res?.data?.map((item) => item.genre))]);
       });
   }, []);

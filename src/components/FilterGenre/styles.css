@@ -1,4 +1,15 @@
 .select-genre {
   height: 60px;
   width: 150px;
+
+  border-radius: 4px;
+
+  background-color: #222831;
+  color: #eeeeee;
+
+  border: 1px solid #eeeeee;
+}
+
+.select-genre:focus {
+  outline: none;
 }

@@ -7,7 +7,6 @@ export function CardGame({ title, image, description, genre, platform, link }) {
   };
 
   const platforms = platform.split(", ");
-  console.log(platforms);
 
   return (
     <div className="card" onClick={() => handleClick()}>

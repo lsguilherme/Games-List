@@ -6,6 +6,12 @@
   cursor: pointer;
 }
 
+.card:hover {
+  background-color: #222831;
+  color: #eeeeee;
+  transition: 0.3s ease-out;
+}
+
 .game-content h2,
 .game-content p,
 .game-content h3 {

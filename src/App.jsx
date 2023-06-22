@@ -14,8 +14,10 @@ import { Footer } from "./components/Footer";
 
 function App() {
   const [games, setGames] = useState(null);
+
+  const [filteredItems, setFilteredItems] = useState(null);
+
   const [genre, setGenre] = useState([]);
-  const [filteredItems, setFilteredItems] = useState([]);
 
   useEffect(() => {
     axios
@@ -24,16 +26,29 @@ function App() {
       })
       .then((res) => {
         setGames(res?.data);
-        console.log(
-          res?.data?.filter((item) => item.platform !== "PC (Windows)")
-        );
+
+        setFilteredItems(res?.data);
+
         setGenre([...new Set(res?.data?.map((item) => item.genre))]);
       });
   }, []);
 
   const handleNameSelect = (name) => {
-    const filtered = games.filter((item) => item?.genre === name);
-    setFilteredItems(filtered);
+    if (name) {
+      const filtered = games.filter((game) => game?.genre === name);
+      setFilteredItems(filtered);
+    }
+
+    if (name === "Todos") {
+      setFilteredItems(games);
+    }
+  };
+
+  const searchInput = (name) => {
+    const gameFilter = games?.filter((game) =>
+      game?.title?.toLowerCase()?.includes(name?.toLowerCase())
+    );
+    setFilteredItems(gameFilter);
   };
 
   return (
@@ -42,32 +57,27 @@ function App() {
 
       <Main>
         <Filter>
-          <FilterSearch />
+          <FilterSearch onSearchInput={searchInput} />
           <FilterGenre genre={genre} onGenreSelected={handleNameSelect} />
         </Filter>
 
         {games ? (
           <ContainerCard>
-            {/* {filteredItems.map((games) => (
-              <CardGame
-                title={games?.title}
-                image={games?.thumbnail}
-                description={games?.short_description}
-                genre={games?.genre}
-                platform={games?.platform}
-                link={games?.game_url}
-              />
-            ))} */}
-            {games.map((games) => (
-              <CardGame
-                title={games?.title}
-                image={games?.thumbnail}
-                description={games?.short_description}
-                genre={games?.genre}
-                platform={games?.platform}
-                link={games?.game_url}
-              />
-            ))}
+            {filteredItems ? (
+              filteredItems.map((games, index) => (
+                <CardGame
+                  key={index}
+                  title={games?.title}
+                  image={games?.thumbnail}
+                  description={games?.short_description}
+                  genre={games?.genre}
+                  platform={games?.platform}
+                  link={games?.game_url}
+                />
+              ))
+            ) : (
+              <p style={{ color: "white" }}>Nenhum jogo encontrado</p>
+            )}
           </ContainerCard>
         ) : (
           <Loading />

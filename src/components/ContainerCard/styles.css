@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 20px 20px;
+  max-width: calc(3 * 365px + 60px);
+}

@@ -12,6 +12,7 @@ import { FilterSearch } from "./components/FilterSearch";
 import { FilterGenre } from "./components/FilterGenre";
 import { Footer } from "./components/Footer";
 import { EmptyGame } from "./components/EmptyGame";
+import { ErrorMessage } from "./components/ErrorMessage";
 
 function App() {
   const [games, setGames] = useState(null);
@@ -47,7 +48,7 @@ function App() {
         ) {
           setError("internalError");
           setErrorMessage(
-            "O servidor falhou em responder, tente recarregar a página"
+            "O servidor falhou em responder, tente recarregar a página."
           );
         }
       })
@@ -84,12 +85,10 @@ function App() {
           <FilterGenre genre={genre} onGenreSelected={handleNameSelect} />
         </Filter>
         {error === "internalError" && (
-          <p style={{ color: "red" }}>{errorMessage}</p>
+          <ErrorMessage errorMessage={errorMessage} />
         )}
 
-        {error === "slowServer" && (
-          <p style={{ color: "red" }}>{errorMessage}</p>
-        )}
+        {error === "slowServer" && <ErrorMessage errorMessage={errorMessage} />}
 
         {!error && !isLoading && games && (
           <ContainerCard>

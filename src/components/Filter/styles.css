@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50vw;
+  width: 100vw;
   row-gap: 40px;
+  padding-top: 7rem;
 }
 
 .filter-container h1 {

@@ -1,7 +1,7 @@
 import "./styles.css";
 import { FaChrome, FaWindows } from "react-icons/fa";
 
-export function CardGame({ title, image, description, genre, platform, link }) {
+export function CardGame({ title, image, genre, platform, link }) {
   const handleClick = () => {
     window.open(link, "_blank");
   };
@@ -17,16 +17,16 @@ export function CardGame({ title, image, description, genre, platform, link }) {
         <h2 className="game-title">{title}</h2>
         <h3 className="game-genre">{genre}</h3>
         <ul className="platform-list">
-          {platforms.includes("PC (Windows)") ? (
+          {platforms.includes("PC (Windows)") && (
             <li>
               <FaWindows />
             </li>
-          ) : null}
-          {platforms.includes("Web Browser") ? (
+          )}
+          {platforms.includes("Web Browser") && (
             <li>
               <FaChrome />
             </li>
-          ) : null}
+          )}
         </ul>
       </div>
     </div>

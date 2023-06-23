@@ -11,6 +11,7 @@ import { Filter } from "./components/Filter";
 import { FilterSearch } from "./components/FilterSearch";
 import { FilterGenre } from "./components/FilterGenre";
 import { Footer } from "./components/Footer";
+import { EmptyGame } from "./components/EmptyGame";
 
 function App() {
   const [games, setGames] = useState(null);
@@ -105,7 +106,7 @@ function App() {
                 />
               ))
             ) : (
-              <p style={{ color: "white" }}>Nenhum jogo encontrado!</p>
+              <EmptyGame />
             )}
           </ContainerCard>
         )}

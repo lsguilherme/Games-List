@@ -1,7 +1,14 @@
 .loading {
-  height: calc(100vh - 548px);
+  border: 8px solid #222831;
+  border-left-color: #eeeeee;
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  animation: spin 1s linear infinite;
 }
 
-.loading p {
-  color: white;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

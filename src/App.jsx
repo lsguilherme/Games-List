@@ -16,8 +16,9 @@ function App() {
   const [games, setGames] = useState(null);
   const [filteredItems, setFilteredItems] = useState(null);
   const [genre, setGenre] = useState([]);
-  const [slowServer, setSlowServer] = useState(false);
-  const [internalError, setInternalError] = useState(false);
+  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -34,14 +35,23 @@ function App() {
       })
       .catch((err) => {
         if (err.code === "ECONNABORTED") {
-          setSlowServer(true);
+          setError("slowServer");
+          setErrorMessage(
+            "O servidor demorou para responder, tente mais tarde."
+          );
         }
 
         if (
           [500, 502, 503, 504, 507, 508, 509].includes(err.response?.status)
         ) {
-          setInternalError(true);
+          setError("internalError");
+          setErrorMessage(
+            "O servidor falhou em responder, tente recarregar a página"
+          );
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -72,19 +82,15 @@ function App() {
           <FilterSearch onSearchInput={searchInput} />
           <FilterGenre genre={genre} onGenreSelected={handleNameSelect} />
         </Filter>
-        {!slowServer && internalError && (
-          <p style={{ color: "red" }}>
-            O servidor fahou em responder, tente recarregar a página
-          </p>
+        {error === "internalError" && (
+          <p style={{ color: "red" }}>{errorMessage}</p>
         )}
 
-        {!internalError && slowServer && (
-          <p style={{ color: "red" }}>
-            O servidor demorou para responder, tente mais tarde.
-          </p>
+        {error === "slowServer" && (
+          <p style={{ color: "red" }}>{errorMessage}</p>
         )}
 
-        {!internalError && !slowServer && games && (
+        {!error && !isLoading && games && (
           <ContainerCard>
             {filteredItems ? (
               filteredItems.map((games, index) => (
@@ -104,7 +110,7 @@ function App() {
           </ContainerCard>
         )}
 
-        {!internalError && !slowServer && !games && <Loading />}
+        {isLoading && <Loading />}
       </Main>
 
       <Footer />

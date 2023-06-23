@@ -7,9 +7,9 @@
   cursor: pointer;
 }
 
-.card:hover {
+.card:hover .game-image {
   transition: 0.3s ease-out;
-  filter: brightness(0.8);
+  filter: brightness(0.7);
 }
 
 .game-content h2,

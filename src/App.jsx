@@ -92,7 +92,7 @@ function App() {
 
         {!error && !isLoading && games && (
           <ContainerCard>
-            {filteredItems ? (
+            {filteredItems.length > 0 ? (
               filteredItems.map((games, index) => (
                 <CardGame
                   key={index}
@@ -105,7 +105,7 @@ function App() {
                 />
               ))
             ) : (
-              <p style={{ color: "white" }}>Nenhum jogo encontrado</p>
+              <p style={{ color: "white" }}>Nenhum jogo encontrado!</p>
             )}
           </ContainerCard>
         )}

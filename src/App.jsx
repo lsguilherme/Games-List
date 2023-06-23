@@ -14,15 +14,16 @@ import { Footer } from "./components/Footer";
 
 function App() {
   const [games, setGames] = useState(null);
-
   const [filteredItems, setFilteredItems] = useState(null);
-
   const [genre, setGenre] = useState([]);
+  const [slowServer, setSlowServer] = useState(false);
+  const [internalError, setInternalError] = useState(false);
 
   useEffect(() => {
     axios
       .get("https://games-test-api-81e9fb0d564a.herokuapp.com/api/data/", {
         headers: { "dev-email-address": "lacerdagui42@gmail.com" },
+        timeout: 5000,
       })
       .then((res) => {
         setGames(res?.data);
@@ -30,6 +31,17 @@ function App() {
         setFilteredItems(res?.data);
 
         setGenre([...new Set(res?.data?.map((item) => item.genre))]);
+      })
+      .catch((err) => {
+        if (err.code === "ECONNABORTED") {
+          setSlowServer(true);
+        }
+
+        if (
+          [500, 502, 503, 504, 507, 508, 509].includes(err.response?.status)
+        ) {
+          setInternalError(true);
+        }
       });
   }, []);
 
@@ -60,8 +72,19 @@ function App() {
           <FilterSearch onSearchInput={searchInput} />
           <FilterGenre genre={genre} onGenreSelected={handleNameSelect} />
         </Filter>
+        {!slowServer && internalError && (
+          <p style={{ color: "red" }}>
+            O servidor fahou em responder, tente recarregar a página
+          </p>
+        )}
 
-        {games ? (
+        {!internalError && slowServer && (
+          <p style={{ color: "red" }}>
+            O servidor demorou para responder, tente mais tarde.
+          </p>
+        )}
+
+        {!internalError && !slowServer && games && (
           <ContainerCard>
             {filteredItems ? (
               filteredItems.map((games, index) => (
@@ -79,9 +102,9 @@ function App() {
               <p style={{ color: "white" }}>Nenhum jogo encontrado</p>
             )}
           </ContainerCard>
-        ) : (
-          <Loading />
         )}
+
+        {!internalError && !slowServer && !games && <Loading />}
       </Main>
 
       <Footer />

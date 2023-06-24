@@ -60,3 +60,9 @@
   font-size: 1.2em;
   color: 393e46;
 }
+
+@media (max-width: 375px) {
+  .game-image {
+    max-width: 300px;
+  }
+}

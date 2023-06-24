@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     axios
       .get("https://games-test-api-81e9fb0d564a.herokuapp.com/api/data/", {
-        headers: { "dev-email-address": "lacerdagui42@gmail.com" },
+        headers: { "dev-email-address": "teste@gmail.com" },
         timeout: 5000,
       })
       .then((res) => {

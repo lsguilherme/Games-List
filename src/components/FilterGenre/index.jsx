@@ -1,11 +1,8 @@
 import { useState } from "react";
 import "./styles.css";
 
-export function FilterGenre({ genre, onGenreSelected }) {
-  const [selectedGenre, setSelectedGenre] = useState("");
-
+export function FilterGenre({ genre, onGenreSelected, selectedGenre }) {
   const handleSelectedGenre = (event) => {
-    setSelectedGenre(event.target.value);
     onGenreSelected(event.target.value);
   };
 

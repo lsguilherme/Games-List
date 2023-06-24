@@ -21,6 +21,7 @@ function App() {
   const [error, setError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedGenre, setSelectedGenre] = useState("");
 
   useEffect(() => {
     axios
@@ -61,9 +62,11 @@ function App() {
     if (name) {
       const filtered = games.filter((game) => game?.genre === name);
       setFilteredItems(filtered);
+      setSelectedGenre(name);
     }
 
     if (name === "Todos") {
+      setSelectedGenre(name);
       setFilteredItems(games);
     }
   };
@@ -73,6 +76,7 @@ function App() {
       game?.title?.toLowerCase()?.includes(name?.toLowerCase())
     );
     setFilteredItems(gameFilter);
+    setSelectedGenre("DEFAULT");
   };
 
   return (
@@ -82,7 +86,11 @@ function App() {
       <Main>
         <Filter>
           <FilterSearch onSearchInput={searchInput} />
-          <FilterGenre genre={genre} onGenreSelected={handleNameSelect} />
+          <FilterGenre
+            genre={genre}
+            onGenreSelected={handleNameSelect}
+            selectedGenre={selectedGenre}
+          />
         </Filter>
         {error === "internalError" && (
           <ErrorMessage errorMessage={errorMessage} />

@@ -6,9 +6,8 @@ Este é um aplicativo de catálogo de jogos que permite aos usuários navegar e 
 
 Aqui estão duas capturas de tela do aplicativo de catálogo de jogos:
 
-![Screenshot 1](https://i.imgur.com/SFLAJUY_d.jpg?maxwidth=520&shape=thumb&fidelity=high)
-
-![Screenshot 2](https://i.imgur.com/8mCxkVR_d.jpg?maxwidth=520&shape=thumb&fidelity=high)
+![Tela 1](https://i.imgur.com/SFLAJUY.png)
+![Tela 2](https://i.imgur.com/8HWW0Uu.png)
 
 ## Tecnologias utilizadas
 

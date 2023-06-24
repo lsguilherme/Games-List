@@ -42,14 +42,17 @@ function App() {
           setErrorMessage(
             "O servidor demorou para responder, tente mais tarde."
           );
-        }
-
-        if (
+        } else if (
           [500, 502, 503, 504, 507, 508, 509].includes(err.response?.status)
         ) {
           setError("internalError");
           setErrorMessage(
             "O servidor falhou em responder, tente recarregar a página."
+          );
+        } else {
+          setError("otherError");
+          setErrorMessage(
+            "O servidor não conseguiu responder por agora, tente voltar novamente mais tarde."
           );
         }
       })
@@ -97,6 +100,8 @@ function App() {
         )}
 
         {error === "slowServer" && <ErrorMessage errorMessage={errorMessage} />}
+
+        {error === "otherError" && <ErrorMessage errorMessage={errorMessage} />}
 
         {!error && !isLoading && games && (
           <ContainerCard>

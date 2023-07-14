@@ -1,13 +1,12 @@
 import "./styles.css";
 import { FaChrome, FaWindows } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiFillStar } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import {
   arrayRemove,
   arrayUnion,
-  collection,
   doc,
   getDoc,
   getFirestore,
@@ -17,6 +16,8 @@ import {
 export function CardGame({ title, image, genre, platform, link, id }) {
   const [liked, setLiked] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [rating, setRating] = useState([]);
+  const [rated, setRated] = useState(null);
 
   const { uid } = useContext(AuthContext);
   const firestore = getFirestore();
@@ -30,17 +31,22 @@ export function CardGame({ title, image, genre, platform, link, id }) {
       if (uid) {
         const userRef = doc(firestore, `users/${uid}`);
         const userDoc = await getDoc(userRef);
-        const userData = userDoc.data();
 
-        const favorites = userData.favorites;
+        const userData = userDoc.data();
+        const { favorites, rating } = userData;
+
         const isLiked = favorites.includes(id);
+        const valueRating = rating[id];
+
+        setRated(valueRating);
 
         setFavorites(favorites);
+        setRating(rating);
         setLiked(isLiked);
       }
     };
     fetchData();
-  }, [liked]);
+  }, [uid, id]);
 
   async function updateFavorites() {
     const userRef = doc(firestore, `users/${uid}`);
@@ -51,8 +57,14 @@ export function CardGame({ title, image, genre, platform, link, id }) {
       : { favorites: arrayUnion(id) };
 
     await updateDoc(userRef, updateData);
+  }
 
-    setLiked(!liked);
+  async function updateRating(newRating) {
+    const userRef = doc(firestore, `users/${uid}`);
+    const updatedRating = { ...rating, [id]: newRating };
+
+    await updateDoc(userRef, { rating: updatedRating });
+    setRated(newRating);
   }
 
   const platforms = platform.split(", ");
@@ -77,6 +89,7 @@ export function CardGame({ title, image, genre, platform, link, id }) {
             </li>
           )}
         </ul>
+
         <div className="fav">
           {uid ? (
             <div className={`heart-icon${liked ? "-liked" : ""}`}>
@@ -90,6 +103,27 @@ export function CardGame({ title, image, genre, platform, link, id }) {
             <Link to="/auth" style={{ color: "white" }}>
               <AiOutlineHeart />
             </Link>
+          )}
+
+          {uid && (
+            <div>
+              <AiFillStar
+                onClick={() => updateRating(1)}
+                style={{ color: rated >= 1 ? "yellow" : "gray" }}
+              />
+              <AiFillStar
+                onClick={() => updateRating(2)}
+                style={{ color: rated >= 2 ? "yellow" : "gray" }}
+              />
+              <AiFillStar
+                onClick={() => updateRating(3)}
+                style={{ color: rated >= 3 ? "yellow" : "gray" }}
+              />
+              <AiFillStar
+                onClick={() => updateRating(4)}
+                style={{ color: rated >= 4 ? "yellow" : "gray" }}
+              />
+            </div>
           )}
         </div>
       </div>

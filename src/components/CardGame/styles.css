@@ -61,7 +61,9 @@
 }
 
 .fav {
+  display: flex;
   cursor: pointer;
+  justify-content: space-between;
 }
 
 @keyframes animation {
@@ -92,6 +94,10 @@
 .heart-icon {
   color: white;
   animation: reverseAnimation 0.4s;
+}
+
+.rated:hover {
+  color: black;
 }
 
 @media (max-width: 375px) {

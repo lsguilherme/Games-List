@@ -4,12 +4,22 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
-import { collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+  updateDoc,
+} from "firebase/firestore";
 
 export function CardGame({ title, image, genre, platform, link, id }) {
   const [liked, setLiked] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
   const { uid } = useContext(AuthContext);
+  const firestore = getFirestore();
 
   const handleClick = () => {
     window.open(link, "_blank");
@@ -17,7 +27,6 @@ export function CardGame({ title, image, genre, platform, link, id }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const firestore = getFirestore();
       if (uid) {
         const userRef = doc(firestore, `users/${uid}`);
         const userDoc = await getDoc(userRef);
@@ -26,14 +35,24 @@ export function CardGame({ title, image, genre, platform, link, id }) {
         const favorites = userData.favorites;
         const isLiked = favorites.includes(id);
 
+        setFavorites(favorites);
         setLiked(isLiked);
       }
     };
     fetchData();
-  }, []);
+  }, [liked]);
 
   async function updateFavorites() {
-    console.log(id);
+    const userRef = doc(firestore, `users/${uid}`);
+    const isFavorite = favorites.includes(id);
+
+    const updateData = isFavorite
+      ? { favorites: arrayRemove(id) }
+      : { favorites: arrayUnion(id) };
+
+    await updateDoc(userRef, updateData);
+
+    setLiked(!liked);
   }
 
   const platforms = platform.split(", ");
@@ -60,13 +79,13 @@ export function CardGame({ title, image, genre, platform, link, id }) {
         </ul>
         <div className="fav">
           {uid ? (
-            liked ? (
-              <div style={{ color: "red" }}>
-                <AiFillHeart onClick={() => updateFavorites()} />
-              </div>
-            ) : (
-              <AiOutlineHeart onClick={() => updateFavorites()} />
-            )
+            <div className={`heart-icon${liked ? "-liked" : ""}`}>
+              {liked ? (
+                <AiFillHeart onClick={updateFavorites} />
+              ) : (
+                <AiOutlineHeart onClick={updateFavorites} />
+              )}
+            </div>
           ) : (
             <Link to="/auth" style={{ color: "white" }}>
               <AiOutlineHeart />

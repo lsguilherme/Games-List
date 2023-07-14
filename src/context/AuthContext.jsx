@@ -22,7 +22,6 @@ export default function AuthProvider({ children }) {
         const userUID = userCredential.user.uid;
 
         setUID(userUID);
-        console.log("foi");
         navigate("/");
       })
       .catch((error) => {

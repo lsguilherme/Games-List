@@ -63,6 +63,37 @@
 .fav {
   cursor: pointer;
 }
+
+@keyframes animation {
+  0% {
+    color: transparent;
+  }
+
+  100% {
+    color: red;
+  }
+}
+
+@keyframes reverseAnimation {
+  0% {
+    color: red;
+  }
+
+  100% {
+    color: white;
+  }
+}
+
+.heart-icon-liked {
+  color: red;
+  animation: animation 0.4s;
+}
+
+.heart-icon {
+  color: white;
+  animation: reverseAnimation 0.4s;
+}
+
 @media (max-width: 375px) {
   .game-image {
     max-width: 300px;

@@ -6,13 +6,12 @@
   margin: 0 auto;
 
   border-radius: 24px;
-
-  cursor: pointer;
 }
 
 .card:hover .game-image {
   transition: 0.3s ease-out;
   filter: brightness(0.7);
+  cursor: pointer;
 }
 
 .game-content h2,
@@ -61,6 +60,9 @@
   color: 393e46;
 }
 
+.fav {
+  cursor: pointer;
+}
 @media (max-width: 375px) {
   .game-image {
     max-width: 300px;

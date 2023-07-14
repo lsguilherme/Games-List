@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { CardGame } from "./../../components/CardGame";
 import { Loading } from "./../../components/Loading";
@@ -15,7 +15,7 @@ import { EmptyGame } from "./../../components/EmptyGame";
 import { ErrorMessage } from "./../../components/ErrorMessage";
 
 function Home() {
-  const [games, setGames] = useState(null);
+  const [games, setGames] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);
   const [genre, setGenre] = useState([]);
   const [error, setError] = useState("");
@@ -115,6 +115,7 @@ function Home() {
                   genre={games?.genre}
                   platform={games?.platform}
                   link={games?.game_url}
+                  id={games?.id}
                 />
               ))
             ) : (

@@ -4,18 +4,26 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-  const [uid, setUID] = useState();
+  const [uid, setUID] = useState("");
+
+  const navigate = useNavigate();
+
+  const firestore = getFirestore();
 
   const handleSignIn = async (email, senha) => {
     await signInWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
         const userUID = userCredential.user.uid;
+
         setUID(userUID);
-        console.log("entrar na conta ", userUID);
+        console.log("foi");
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -25,10 +33,13 @@ export default function AuthProvider({ children }) {
 
   const handleSignUp = async (email, senha) => {
     await createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const userUID = userCredential.user.uid;
 
-        console.log("cadastrar conta ", userUID);
+        const userRef = collection(firestore, "users");
+        const cadastroUid = doc(userRef, userUID);
+
+        await setDoc(cadastroUid, { favorites: [], rating: [] });
       })
       .catch((error) => {
         const errorCode = error.code;

@@ -2,57 +2,30 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {
-  addDoc,
-  collection,
-  doc,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
 
 export default function Auth() {
   const [email, setEmail] = useState("teste@gmail.com");
   const [senha, setSenha] = useState("12345678");
+  const [register, setRegister] = useState(false);
 
   const navigate = useNavigate();
 
-  const { uid, handleSignIn } = useContext(AuthContext);
+  const { uid, handleSignIn, handleSignUp } = useContext(AuthContext);
 
-  const firestore = getFirestore();
-
-  /* useEffect(() => {
-    if (uid) {
-      navigate("/register");
-    }
-  }, [uid]); */
-
-  // levar essa função para o cadastro de usuário
-  async function cadastroFirebase() {
-    // cadastro do usuario
-    const usuarioRef = collection(firestore, "users");
-    const cadastroUid = doc(usuarioRef, uid);
-
-    await setDoc(cadastroUid, {});
-
-    // cadastro da subcollection
-    const usuarioRef2 = collection(firestore, `users/${uid}/games`);
-    await setDoc(doc(usuarioRef2, "teste"), {
-      teste: "teste",
-    });
-
-    /* 
-      usuarioRef2 - caminho que será adicionado
-      "teste" - id que será adicionado no doc(passar o id do game)
-    */
-  }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleSignIn(email, senha);
-    await cadastroFirebase();
+    if (register) {
+      await handleSignUp(email, senha);
+    }
+
+    if (!register) {
+      await handleSignIn(email, senha);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1>{register ? "Cadastro" : "Login"}</h1>
       <label htmlFor="email">Email:</label>
       <input
         type="email"
@@ -77,7 +50,19 @@ export default function Auth() {
       <br />
       <br />
 
-      <input type="submit" value="Enviar" onClick={handleSubmit} />
+      {register ? (
+        <p onClick={() => setRegister(!register)}>Já possuo conta</p>
+      ) : (
+        <p onClick={() => setRegister(!register)}>Fazer cadastro</p>
+      )}
+      <br />
+      <br />
+
+      {register ? (
+        <input type="submit" value="Cadastrar" onClick={handleSubmit} />
+      ) : (
+        <input type="submit" value="Login" onClick={handleSubmit} />
+      )}
     </form>
   );
 }

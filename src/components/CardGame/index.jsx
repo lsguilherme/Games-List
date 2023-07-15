@@ -90,23 +90,25 @@ export function CardGame({ title, image, genre, platform, link, id }) {
           )}
         </ul>
 
-        <div className="fav">
-          {uid ? (
-            <div className={`heart-icon${liked ? "-liked" : ""}`}>
-              {liked ? (
-                <AiFillHeart onClick={updateFavorites} />
-              ) : (
-                <AiOutlineHeart onClick={updateFavorites} />
-              )}
-            </div>
-          ) : (
-            <Link to="/auth" style={{ color: "white" }}>
-              <AiOutlineHeart />
-            </Link>
-          )}
+        <div className="container-avaliation">
+          <div className="fav">
+            {uid ? (
+              <div className={`heart-icon${liked ? "-liked" : ""}`}>
+                {liked ? (
+                  <AiFillHeart onClick={updateFavorites} />
+                ) : (
+                  <AiOutlineHeart onClick={updateFavorites} />
+                )}
+              </div>
+            ) : (
+              <Link to="/auth" style={{ color: "white" }}>
+                <AiOutlineHeart />
+              </Link>
+            )}
+          </div>
 
-          {uid && (
-            <div>
+          {uid ? (
+            <div className="rating">
               <AiFillStar
                 onClick={() => updateRating(1)}
                 style={{ color: rated >= 1 ? "yellow" : "gray" }}
@@ -124,6 +126,13 @@ export function CardGame({ title, image, genre, platform, link, id }) {
                 style={{ color: rated >= 4 ? "yellow" : "gray" }}
               />
             </div>
+          ) : (
+            <Link to="/auth" style={{ color: "white" }}>
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+            </Link>
           )}
         </div>
       </div>

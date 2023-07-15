@@ -59,11 +59,14 @@
   font-size: 1.2em;
   color: 393e46;
 }
-
-.fav {
+.container-avaliation {
   display: flex;
-  cursor: pointer;
   justify-content: space-between;
+}
+
+.fav,
+.rating {
+  cursor: pointer;
 }
 
 @keyframes animation {
@@ -94,10 +97,6 @@
 .heart-icon {
   color: white;
   animation: reverseAnimation 0.4s;
-}
-
-.rated:hover {
-  color: black;
 }
 
 @media (max-width: 375px) {

@@ -75,7 +75,7 @@
 
 @keyframes animation {
   0% {
-    color: transparent;
+    color: grey;
   }
 
   100% {
@@ -89,7 +89,7 @@
   }
 
   100% {
-    color: white;
+    color: grey;
   }
 }
 
@@ -99,7 +99,6 @@
 }
 
 .heart-icon {
-  color: white;
   animation: reverseAnimation 0.4s;
 }
 

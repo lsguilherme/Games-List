@@ -98,12 +98,16 @@ export function CardGame({ title, image, genre, platform, link, id }) {
                 {liked ? (
                   <AiFillHeart onClick={updateFavorites} size={20} />
                 ) : (
-                  <AiOutlineHeart onClick={updateFavorites} size={20} />
+                  <AiFillHeart
+                    onClick={updateFavorites}
+                    size={20}
+                    color="grey"
+                  />
                 )}
               </div>
             ) : (
               <Link to="/auth" style={{ color: "white" }}>
-                <AiOutlineHeart />
+                <AiFillHeart color="grey" />
               </Link>
             )}
           </div>
@@ -126,9 +130,9 @@ export function CardGame({ title, image, genre, platform, link, id }) {
               })}
             </div>
           ) : (
-            <Link to="/auth" style={{ color: "white" }}>
+            <Link to="/auth">
               {[...Array(4)].map((_, index) => {
-                return <AiFillStar key={index} size={20} />;
+                return <AiFillStar key={index} size={20} color="grey" />;
               })}
             </Link>
           )}

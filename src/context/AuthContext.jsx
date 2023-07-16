@@ -11,6 +11,8 @@ export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [uid, setUID] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,8 +27,16 @@ export default function AuthProvider({ children }) {
         navigate("/");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        console.log("erro ao autenticar: " + errorCode);
+        if (error.code === "auth/wrong-password") {
+          setErrorMessage("Email ou senha incorreto!");
+        } else if (error.code === "auth/user-not-found") {
+          setErrorMessage("Email ou senha incorreto!");
+        } else if (error.code === "auth/invalid-email") {
+          setErrorMessage("Email ou senha incorreto!");
+        } else {
+          setErrorMessage(`Erro no servidor, tente novamente mais tarde!`);
+        }
+        setError(true);
       });
   };
 
@@ -41,12 +51,26 @@ export default function AuthProvider({ children }) {
         await setDoc(cadastroUid, { favorites: [], rating: [] });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        console.log("erro ao autenticar: " + errorCode);
+        console.log(error.message);
+        if (error.code === "auth/email-already-in-use") {
+          setErrorMessage("Email já cadastrado!");
+        } else if (error.code === "auth/invalid-email") {
+          setErrorMessage("Email inválido!");
+        } else {
+          setErrorMessage(`Erro no servidor, tente novamente mais tarde!`);
+        }
+        setError(true);
       });
   };
 
-  const currentValue = { uid, handleSignIn, handleSignUp };
+  const currentValue = {
+    uid,
+    handleSignIn,
+    handleSignUp,
+    errorMessage,
+    error,
+    setError,
+  };
 
   return (
     <AuthContext.Provider value={currentValue}>{children}</AuthContext.Provider>

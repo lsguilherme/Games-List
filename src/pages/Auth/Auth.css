@@ -1,0 +1,99 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #393e46;
+}
+
+.error-message {
+  font-family: sans-serif;
+  font-size: 14px;
+  color: red;
+  align-self: center;
+}
+
+.auth-form h2,
+.auth-form label,
+.auth-form a {
+  font-family: sans-serif;
+  color: white;
+}
+.auth-form {
+  width: 380px;
+  height: 420px;
+
+  border-radius: 8px;
+  background-color: #222831;
+  padding: 60px 40px 0 40px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title-form {
+  color: #fff;
+  font-weight: 700;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.container-input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-form {
+  background-color: transparent;
+  color: white;
+
+  outline: none;
+
+  padding: 12px 4px 8px 8px;
+
+  border: 1px solid white;
+  border-radius: 4px;
+}
+.input-form::placeholder {
+  font-weight: 200;
+  font-size: 12px;
+}
+
+.label-form {
+  letter-spacing: 0.02em;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.button-form {
+  background-color: #393e46;
+  color: white;
+  border: none;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  padding: 12px 8px;
+  border-radius: 4px;
+
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+
+.button-form:hover,
+.change-register:hover {
+  filter: brightness(110%);
+}
+
+.change-register {
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: underline;
+}
+
+.change-register:hover {
+  opacity: 0.8;
+}

@@ -7,6 +7,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import { ToastContainer, cssTransition, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -30,7 +33,7 @@ export default function Auth() {
     resolver: yupResolver(schema),
   });
 
-  const { handleSignIn, handleSignUp, errorMessage, error, setError } =
+  const { handleSignIn, handleSignUp, error, setError } =
     useContext(AuthContext);
 
   const onSubmit = async (data, e) => {
@@ -46,6 +49,7 @@ export default function Auth() {
     if (!variant) {
       await handleSignIn(email, senha);
     }
+    reset();
   };
 
   const changeVariant = async () => {
@@ -53,37 +57,19 @@ export default function Auth() {
     reset();
     setVariant(!variant);
   };
-
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="title-form">{variant ? "Cadastro" : "Login"}</h2>
         <div className="container-input-form">
-          {error &&
-            (errorMessage !== "Email inválido!" ||
-              errorMessage !== "Email já cadastrado!") && (
-              <p className="error-message">{errorMessage}</p>
-            )}
           <label
-            className={`label-form${
-              errors.email ||
-              errorMessage === "Email inválido!" ||
-              errorMessage === "Email já cadastrado!"
-                ? "-error"
-                : ""
-            }`}
+            className={`label-form${errors.email || error ? "-error" : ""}`}
             htmlFor="email"
           >
             Email
           </label>
           <input
-            className={`input-form${
-              errors.email ||
-              errorMessage === "Email inválido!" ||
-              errorMessage === "Email já cadastrado!"
-                ? "-error"
-                : ""
-            }`}
+            className={`input-form${errors.email || error ? "-error" : ""}`}
             autoComplete="off"
             placeholder="Email"
             type="text"
@@ -93,22 +79,17 @@ export default function Auth() {
           {errors.email && (
             <p className="error-message">{errors.email.message}</p>
           )}
-
-          {errorMessage === "Email inválido!" ||
-            (errorMessage === "Email já cadastrado!" && (
-              <p className="error-message">{errorMessage}</p>
-            ))}
         </div>
 
         <div className="container-input-form">
           <label
-            className={`label-form${errors.senha ? "-error" : ""}`}
+            className={`label-form${errors.senha || error ? "-error" : ""}`}
             htmlFor="senha"
           >
             Senha
           </label>
           <input
-            className={`input-form${errors.senha ? "-error" : ""}`}
+            className={`input-form${errors.senha || error ? "-error" : ""}`}
             placeholder="Senha"
             type="password"
             id="senha"

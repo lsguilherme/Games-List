@@ -12,6 +12,7 @@ import {
   getFirestore,
   updateDoc,
 } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 export function CardGame({ title, image, genre, platform, link, id }) {
   const [liked, setLiked] = useState(false);
@@ -57,15 +58,35 @@ export function CardGame({ title, image, genre, platform, link, id }) {
       ? { favorites: arrayRemove(id) }
       : { favorites: arrayUnion(id) };
 
-    await updateDoc(userRef, updateData);
+    await updateDoc(userRef, updateData)
+      .then(() => {
+        toast.success("Favoritado com sucesso!", {
+          autoClose: 1500,
+        });
+      })
+      .catch(() => {
+        toast.error("Erro ao favoritar.", {
+          autoClose: 1500,
+        });
+      });
   }
 
   async function updateRating(newRating) {
     const userRef = doc(firestore, `users/${uid}`);
     const updatedRating = { ...rating, [id]: newRating };
 
-    await updateDoc(userRef, { rating: updatedRating });
-    setRated(newRating);
+    await updateDoc(userRef, { rating: updatedRating })
+      .then(() => {
+        setRated(newRating);
+        toast.success("Avaliação realizada!", {
+          autoClose: 1500,
+        });
+      })
+      .catch(() => {
+        toast.error("Erro ao avaliar", {
+          autoClose: 1500,
+        });
+      });
   }
 
   const platforms = platform.split(", ");

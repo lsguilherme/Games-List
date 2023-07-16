@@ -6,12 +6,12 @@ import {
 import { auth } from "../config/firebase";
 import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
   const [uid, setUID] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
@@ -27,18 +27,16 @@ export default function AuthProvider({ children }) {
         navigate("/");
       })
       .catch((error) => {
-        if (error.code === "auth/wrong-password") {
-          setErrorMessage("Email ou senha incorreto!");
-        } else if (error.code === "auth/user-not-found") {
-          setErrorMessage("Email ou senha incorreto!");
-        } else if (error.code === "auth/invalid-email") {
-          setErrorMessage("Email ou senha incorreto!");
+        if (
+          error.code === "auth/wrong-password" ||
+          error.code === "auth/user-not-found" ||
+          error.code === "auth/invalid-email"
+        ) {
+          toast.error("Email ou senha incorreto!");
         } else if (error.code === "auth/too-many-requests") {
-          setErrorMessage(
-            "Você errou muitas vezes, tente novamente mais tarde!"
-          );
+          toast.error("Você errou muitas vezes, tente novamente mais tarde!");
         } else {
-          setErrorMessage(`Erro no servidor, tente novamente mais tarde!`);
+          toast.error("Erro no servidor, tente novamente mais tarde!");
         }
         setError(true);
       });
@@ -47,6 +45,8 @@ export default function AuthProvider({ children }) {
   const handleSignUp = async (email, senha) => {
     await createUserWithEmailAndPassword(auth, email, senha)
       .then(async (userCredential) => {
+        setError(false);
+        toast.success("Usuário cadastrado com sucesso!");
         const userUID = userCredential.user.uid;
 
         const userRef = collection(firestore, "users");
@@ -56,11 +56,11 @@ export default function AuthProvider({ children }) {
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
-          setErrorMessage("Email já cadastrado!");
+          toast.error("Email já cadastrado!");
         } else if (error.code === "auth/invalid-email") {
-          setErrorMessage("Email inválido!");
+          toast.error("Email inválido!");
         } else {
-          setErrorMessage(`Erro no servidor, tente novamente mais tarde!`);
+          toast.error("Erro no servidor, tente novamente mais tarde!");
         }
         setError(true);
       });
@@ -70,7 +70,6 @@ export default function AuthProvider({ children }) {
     uid,
     handleSignIn,
     handleSignUp,
-    errorMessage,
     error,
     setError,
   };

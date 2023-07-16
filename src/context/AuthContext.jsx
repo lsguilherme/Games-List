@@ -33,6 +33,10 @@ export default function AuthProvider({ children }) {
           setErrorMessage("Email ou senha incorreto!");
         } else if (error.code === "auth/invalid-email") {
           setErrorMessage("Email ou senha incorreto!");
+        } else if (error.code === "auth/too-many-requests") {
+          setErrorMessage(
+            "Você errou muitas vezes, tente novamente mais tarde!"
+          );
         } else {
           setErrorMessage(`Erro no servidor, tente novamente mais tarde!`);
         }
@@ -51,7 +55,6 @@ export default function AuthProvider({ children }) {
         await setDoc(cadastroUid, { favorites: [], rating: [] });
       })
       .catch((error) => {
-        console.log(error.message);
         if (error.code === "auth/email-already-in-use") {
           setErrorMessage("Email já cadastrado!");
         } else if (error.code === "auth/invalid-email") {

@@ -3,86 +3,131 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import "./Auth.css";
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Digite um endereço de email válido")
+    .required("O email é obrigatório"),
+  senha: yup
+    .string()
+    .min(6, "A senha deve ter pelo menos 6 caracteres")
+    .required("A senha é obrigatória"),
+});
+
 export default function Auth() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [register, setRegister] = useState(false);
+  const [variant, setVariant] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const { handleSignIn, handleSignUp, errorMessage, error, setError } =
     useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
+  const onSubmit = async (data, e) => {
     e.preventDefault();
-    if (register) {
+
+    const email = data.email;
+    const senha = data.senha;
+
+    if (variant) {
       await handleSignUp(email, senha);
     }
 
-    if (!register) {
+    if (!variant) {
       await handleSignIn(email, senha);
     }
   };
 
   const changeVariant = async () => {
-    setEmail("");
-    setSenha("");
     setError(false);
-    setRegister(!register);
+    reset();
+    setVariant(!variant);
   };
 
   return (
     <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h2 className="title-form">{register ? "Cadastro" : "Login"}</h2>
+      <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
+        <h2 className="title-form">{variant ? "Cadastro" : "Login"}</h2>
         <div className="container-input-form">
-          {error && <p className="error-message">{errorMessage}</p>}
-          <label className="label-form" htmlFor="email">
+          {error &&
+            (errorMessage !== "Email inválido!" ||
+              errorMessage !== "Email já cadastrado!") && (
+              <p className="error-message">{errorMessage}</p>
+            )}
+          <label
+            className={`label-form${
+              errors.email ||
+              errorMessage === "Email inválido!" ||
+              errorMessage === "Email já cadastrado!"
+                ? "-error"
+                : ""
+            }`}
+            htmlFor="email"
+          >
             Email
           </label>
           <input
-            className="input-form"
+            className={`input-form${
+              errors.email ||
+              errorMessage === "Email inválido!" ||
+              errorMessage === "Email já cadastrado!"
+                ? "-error"
+                : ""
+            }`}
             autoComplete="off"
             placeholder="Email"
-            type="email"
+            type="text"
             name="email"
-            value={email}
-            onChange={(e) => [setEmail(e.target.value), setError(false)]}
-            required
+            {...register("email")}
           />
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
+
+          {errorMessage === "Email inválido!" ||
+            (errorMessage === "Email já cadastrado!" && (
+              <p className="error-message">{errorMessage}</p>
+            ))}
         </div>
 
         <div className="container-input-form">
-          <label className="label-form" htmlFor="senha">
+          <label
+            className={`label-form${errors.senha ? "-error" : ""}`}
+            htmlFor="senha"
+          >
             Senha
           </label>
           <input
-            className="input-form"
+            className={`input-form${errors.senha ? "-error" : ""}`}
             placeholder="Senha"
             type="password"
             id="senha"
             name="senha"
-            value={senha}
-            onChange={(e) => [setSenha(e.target.value), setError(false)]}
-            required
+            {...register("senha")}
           />
+
+          {errors.senha && (
+            <p className="error-message">{errors.senha.message}</p>
+          )}
         </div>
 
-        {register ? (
-          <input
-            className="button-form"
-            type="submit"
-            value="Cadastrar"
-            onClick={handleSubmit}
-          />
+        {variant ? (
+          <input className="button-form" type="submit" value="Cadastrar" />
         ) : (
-          <input
-            className="button-form"
-            type="submit"
-            value="Login"
-            onClick={handleSubmit}
-          />
+          <input className="button-form" type="submit" value="Login" />
         )}
         <div className="change-register">
-          {register ? (
+          {variant ? (
             <a onClick={changeVariant}>Já possuo conta</a>
           ) : (
             <a onClick={changeVariant}>Cadastre-se</a>

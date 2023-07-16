@@ -20,7 +20,6 @@
 .auth-form label,
 .auth-form a {
   font-family: sans-serif;
-  color: white;
 }
 .auth-form {
   width: 380px;
@@ -49,7 +48,8 @@
   flex-direction: column;
   gap: 6px;
 }
-.input-form {
+.input-form,
+.input-form-error {
   background-color: transparent;
   color: white;
 
@@ -60,15 +60,26 @@
   border: 1px solid white;
   border-radius: 4px;
 }
+
+.input-form-error {
+  border: 1px solid red;
+}
+
 .input-form::placeholder {
   font-weight: 200;
   font-size: 12px;
 }
 
-.label-form {
+.label-form,
+.label-form-error {
   letter-spacing: 0.02em;
   font-size: 12px;
   font-weight: 200;
+
+  color: white;
+}
+.label-form-error {
+  color: red;
 }
 
 .button-form {

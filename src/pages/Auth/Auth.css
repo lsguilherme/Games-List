@@ -3,7 +3,10 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #393e46;
+
+  background: linear-gradient(rgba(34, 40, 49, 0.7), rgba(34, 40, 49, 0.7)),
+    url("../../assets/bg.jpg");
+  background-size: contain;
 }
 
 .error-message {
@@ -27,6 +30,7 @@
   background-color: #222831;
   padding: 60px 40px 0 40px;
 
+  border: 2px solid #393e46;
   display: flex;
   flex-direction: column;
   gap: 24px;

@@ -1,10 +1,15 @@
 .header-container {
+  display: flex;
+  justify-content: space-between;
   width: 100vw;
   height: 80px;
   position: fixed;
   background-color: #222831;
   z-index: 1;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.empty {
+  width: 20%;
 }
 .header-container div {
   display: flex;
@@ -25,4 +30,18 @@
   font-weight: 600;
   color: white;
   padding: 0 0.5em;
+}
+
+.container-button-login {
+  display: flex;
+  width: 20%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  color: white;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 16px;
 }

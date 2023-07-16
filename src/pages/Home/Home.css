@@ -1,0 +1,14 @@
+.button-refresh {
+  background-color: #222831;
+  color: white;
+  border: none;
+
+  padding: 16px 24px;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.button-refresh:hover {
+  filter: brightness(120%);
+}

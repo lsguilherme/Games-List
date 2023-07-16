@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CardGame } from "./../../components/CardGame";
 import { Loading } from "./../../components/Loading";
@@ -14,6 +14,7 @@ import { Footer } from "./../../components/Footer";
 import { EmptyGame } from "./../../components/EmptyGame";
 import { ErrorMessage } from "./../../components/ErrorMessage";
 
+import "./Home.css";
 function Home() {
   const [games, setGames] = useState([]);
   const [filteredItems, setFilteredItems] = useState(null);
@@ -22,6 +23,7 @@ function Home() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     axios
@@ -59,7 +61,7 @@ function Home() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [refresh]);
 
   const handleNameSelect = (name) => {
     if (name) {
@@ -82,6 +84,12 @@ function Home() {
     setSelectedGenre("DEFAULT");
   };
 
+  const refreshState = () => {
+    setRefresh(!refresh);
+    setIsLoading(true);
+    setError(false);
+  };
+
   return (
     <>
       <Header />
@@ -102,6 +110,11 @@ function Home() {
         {error === "slowServer" && <ErrorMessage errorMessage={errorMessage} />}
 
         {error === "otherError" && <ErrorMessage errorMessage={errorMessage} />}
+        {error && (
+          <button className="button-refresh" onClick={refreshState}>
+            Atualizar página
+          </button>
+        )}
 
         {!error && !isLoading && games && (
           <ContainerCard>

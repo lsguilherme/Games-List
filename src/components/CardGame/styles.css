@@ -64,6 +64,10 @@
   justify-content: space-between;
 }
 
+.container-avaliation {
+  padding: 8px 0 0 0;
+}
+
 .fav,
 .rating {
   cursor: pointer;
@@ -75,13 +79,13 @@
   }
 
   100% {
-    color: red;
+    color: #e6454e;
   }
 }
 
 @keyframes reverseAnimation {
   0% {
-    color: red;
+    color: #e6454e;
   }
 
   100% {
@@ -90,7 +94,7 @@
 }
 
 .heart-icon-liked {
-  color: red;
+  color: #e6454e;
   animation: animation 0.4s;
 }
 

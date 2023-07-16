@@ -18,6 +18,7 @@ export function CardGame({ title, image, genre, platform, link, id }) {
   const [favorites, setFavorites] = useState([]);
   const [rating, setRating] = useState([]);
   const [rated, setRated] = useState(null);
+  const [hover, setHover] = useState(null);
 
   const { uid } = useContext(AuthContext);
   const firestore = getFirestore();
@@ -46,7 +47,7 @@ export function CardGame({ title, image, genre, platform, link, id }) {
       }
     };
     fetchData();
-  }, [uid, id]);
+  }, [rated, favorites]);
 
   async function updateFavorites() {
     const userRef = doc(firestore, `users/${uid}`);
@@ -95,9 +96,9 @@ export function CardGame({ title, image, genre, platform, link, id }) {
             {uid ? (
               <div className={`heart-icon${liked ? "-liked" : ""}`}>
                 {liked ? (
-                  <AiFillHeart onClick={updateFavorites} />
+                  <AiFillHeart onClick={updateFavorites} size={20} />
                 ) : (
-                  <AiOutlineHeart onClick={updateFavorites} />
+                  <AiOutlineHeart onClick={updateFavorites} size={20} />
                 )}
               </div>
             ) : (
@@ -109,29 +110,26 @@ export function CardGame({ title, image, genre, platform, link, id }) {
 
           {uid ? (
             <div className="rating">
-              <AiFillStar
-                onClick={() => updateRating(1)}
-                style={{ color: rated >= 1 ? "yellow" : "gray" }}
-              />
-              <AiFillStar
-                onClick={() => updateRating(2)}
-                style={{ color: rated >= 2 ? "yellow" : "gray" }}
-              />
-              <AiFillStar
-                onClick={() => updateRating(3)}
-                style={{ color: rated >= 3 ? "yellow" : "gray" }}
-              />
-              <AiFillStar
-                onClick={() => updateRating(4)}
-                style={{ color: rated >= 4 ? "yellow" : "gray" }}
-              />
+              {[...Array(4)].map((_, index) => {
+                const ratingValue = index + 1;
+                return (
+                  <AiFillStar
+                    key={index}
+                    className="star"
+                    size={20}
+                    color={ratingValue <= (hover || rated) ? "#ffcb0c" : "grey"}
+                    onClick={() => updateRating(ratingValue)}
+                    onMouseEnter={() => setHover(ratingValue)}
+                    onMouseLeave={() => setHover(null)}
+                  />
+                );
+              })}
             </div>
           ) : (
             <Link to="/auth" style={{ color: "white" }}>
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
+              {[...Array(4)].map((_, index) => {
+                return <AiFillStar key={index} size={20} />;
+              })}
             </Link>
           )}
         </div>

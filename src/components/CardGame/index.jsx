@@ -1,6 +1,6 @@
 import "./styles.css";
 import { FaChrome, FaWindows } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart, AiFillStar } from "react-icons/ai";
+import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";

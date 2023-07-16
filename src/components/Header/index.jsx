@@ -12,14 +12,16 @@ export function Header() {
   return (
     <header className="header-container">
       <div className="empty" />
-      <div onClick={handleIconClick}>
+      <div className="logo-header" onClick={handleIconClick}>
         <FaGamepad />
         <p>Game List</p>
       </div>
       {!uid ? (
-        <Link className="container-button-login" to="/auth">
-          Login
-        </Link>
+        <div className="container-button-login">
+          <Link className="button-login" to="/auth">
+            <p>Login</p>
+          </Link>
+        </div>
       ) : (
         <div className="empty" />
       )}

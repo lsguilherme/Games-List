@@ -15,7 +15,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   height: 100%;
 }
 
@@ -23,8 +22,11 @@
   color: #eeeeee;
   font-size: 4.2em;
 }
+.logo-header {
+  cursor: pointer;
+}
 
-.header-container p {
+.logo-header p {
   font-size: 16px;
   font-family: sans-serif;
   font-weight: 600;
@@ -33,15 +35,45 @@
 }
 
 .container-button-login {
-  display: flex;
   width: 20%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 
   color: white;
   text-decoration: none;
   font-family: sans-serif;
   font-weight: bold;
   font-size: 16px;
+}
+
+.button-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  min-width: 40px;
+  height: 52px;
+  background-color: #393e46;
+  border-radius: 8px;
+
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 600;
+  color: white;
+  padding: 0 0.5em;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.button-login:hover {
+  filter: brightness(120%);
+}
+
+@media (max-width: 375px) {
+  .button-login {
+    width: 40px;
+    height: 40px;
+    margin-right: 0;
+  }
+  .button-login p {
+    font-size: 14px;
+  }
 }

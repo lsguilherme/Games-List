@@ -2,6 +2,7 @@ import { useContext } from "react";
 import "./styles.css";
 import { FaGamepad } from "react-icons/fa";
 import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export function Header() {
   const { uid } = useContext(AuthContext);
@@ -16,9 +17,9 @@ export function Header() {
         <p>Game List</p>
       </div>
       {!uid ? (
-        <a className="container-button-login" href="/auth">
+        <Link className="container-button-login" to="/auth">
           Login
-        </a>
+        </Link>
       ) : (
         <div className="empty" />
       )}
